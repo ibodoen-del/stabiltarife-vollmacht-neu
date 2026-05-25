@@ -40,7 +40,7 @@ export default async function handler(req, res) {
         secure: true,
         auth: {
           user: "info@stabiltarife.de",
-          pass: "DEINPASSWORT"
+          pass: "22021998Zhn#.,"
         }
       });
 
