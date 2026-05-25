@@ -63,8 +63,8 @@ Energieversorgern und Versicherungen zu kommunizieren.
 `;
 
 await transporter.sendMail({
-from: '"StabilTarife" <info@stabiltarife.de>',
-to: `info@stabiltarife.de, ${email}`,
+from: "info@stabiltarife.de",
+to: "info@stabiltarife.de",
 subject: "Neue StabilTarife Vollmacht",
 html: html
 });
