@@ -32,7 +32,7 @@ export default async function handler(req, res) {
 
       auth: {
         user: "info@stabiltarife.de",
-        pass: "HIER_DEIN_IONOS_PASSWORT"
+        pass: "22021998Zhn#.,"
       }
 
     });
