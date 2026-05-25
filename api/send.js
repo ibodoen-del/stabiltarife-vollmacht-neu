@@ -3,125 +3,135 @@ import PDFDocument from "pdfkit";
 
 export default async function handler(req, res) {
 
-if (req.method !== "POST") {
-return res.status(405).json({
-success:false
-});
-}
+  if (req.method !== "POST") {
+    return res.status(405).json({
+      success: false
+    });
+  }
 
-try {
+  try {
 
-const {
-vorname,
-nachname,
-strasse,
-plz,
-stadt,
-geburtsdatum,
-email,
-unterschrift
-} = req.body;
+    const {
+      vorname,
+      nachname,
+      strasse,
+      plz,
+      stadt,
+      geburtsdatum,
+      email,
+      unterschrift
+    } = req.body;
 
-const doc = new PDFDocument({
-margin:40
-});
+    const doc = new PDFDocument({
+      margin: 40
+    });
 
-let buffers = [];
+    let buffers = [];
 
-doc.on("data", buffers.push.bind(buffers));
+    doc.on("data", buffers.push.bind(buffers));
 
-doc.on("end", async () => {
+    doc.on("end", async () => {
 
-const pdfData = Buffer.concat(buffers);
+      const pdfData = Buffer.concat(buffers);
 
-const transporter = nodemailer.createTransport({
-host:"smtp.ionos.de",
-port:465,
-secure:true,
-auth:{
-user:"info@stabiltarife.de",
-pass:"22021998Zhn#.,"
-}
-});
+      const transporter = nodemailer.createTransport({
+        host: "smtp.ionos.de",
+        port: 465,
+        secure: true,
+        auth: {
+          user: "info@stabiltarife.de",
+          pass: "DEINPASSWORT"
+        }
+      });
 
-await transporter.sendMail({
+      await transporter.sendMail({
 
-from:"info@stabiltarife.de",
+        from: "info@stabiltarife.de",
 
-to:`info@stabiltarife.de, ${email}`,
+        to: [
+          "info@stabiltarife.de",
+          email
+        ],
 
-subject:"StabilTarife Einverständniserklärung",
+        subject: "StabilTarife Einverständniserklärung",
 
-text:"Im Anhang befindet sich die unterschriebene PDF.",
+        text: "Im Anhang befindet sich die unterschriebene PDF.",
 
-attachments:[
-{
-filename:"StabilTarife-Einverstaendnis.pdf",
-content:pdfData
-}
-]
+        attachments: [
+          {
+            filename: "StabilTarife-Einverstaendnis.pdf",
+            content: pdfData,
+            contentType: "application/pdf"
+          }
+        ]
 
-});
+      });
 
-return res.status(200).json({
-success:true
-});
+      return res.status(200).json({
+        success: true
+      });
 
-});
+    });
 
-doc.fontSize(22).text("StabilTarife Einverständniserklärung");
+    doc.fontSize(22).text(
+      "StabilTarife Einverständniserklärung"
+    );
 
-doc.moveDown();
+    doc.moveDown();
 
-doc.fontSize(14);
+    doc.fontSize(14);
 
-doc.text(`Vorname: ${vorname}`);
-doc.text(`Nachname: ${nachname}`);
-doc.text(`Straße: ${strasse}`);
-doc.text(`PLZ: ${plz}`);
-doc.text(`Stadt: ${stadt}`);
-doc.text(`Geburtsdatum: ${geburtsdatum}`);
-doc.text(`E-Mail: ${email}`);
+    doc.text(`Vorname: ${vorname}`);
+    doc.text(`Nachname: ${nachname}`);
+    doc.text(`Straße: ${strasse}`);
+    doc.text(`PLZ: ${plz}`);
+    doc.text(`Stadt: ${stadt}`);
+    doc.text(`Geburtsdatum: ${geburtsdatum}`);
+    doc.text(`E-Mail: ${email}`);
 
-doc.moveDown();
+    doc.moveDown();
 
-doc.text(
-"Hiermit erkläre ich mein Einverständnis, dass StabilTarife bzw. Ibrahim Doenmez in meinem Namen Energie- und Versicherungsangebote einholen, Tarifvergleiche durchführen sowie mit Energieversorgern und Versicherungen kommunizieren darf.",
-{
-width:500
-}
-);
+    doc.text(
+      "Hiermit erkläre ich mein Einverständnis, dass StabilTarife bzw. Ibrahim Doenmez in meinem Namen Energie- und Versicherungsangebote einholen, Tarifvergleiche durchführen sowie mit Energieversorgern und Versicherungen kommunizieren darf.",
+      {
+        width: 500,
+        align: "left"
+      }
+    );
 
-doc.moveDown(2);
+    doc.moveDown(2);
 
-doc.text("Unterschrift:");
+    doc.text("Unterschrift:");
 
-if(unterschrift){
+    if (unterschrift) {
 
-const base64Data = unterschrift.replace(
-/^data:image\/png;base64,/,
-""
-);
+      const base64Data = unterschrift.replace(
+        /^data:image\/png;base64,/,
+        ""
+      );
 
-const imageBuffer = Buffer.from(base64Data,"base64");
+      const imageBuffer = Buffer.from(
+        base64Data,
+        "base64"
+      );
 
-doc.image(imageBuffer,{
-fit:[250,120]
-});
+      doc.image(imageBuffer, {
+        fit: [250, 120]
+      });
 
-}
+    }
 
-doc.end();
+    doc.end();
 
-} catch(error){
+  } catch (error) {
 
-console.log(error);
+    console.log(error);
 
-return res.status(500).json({
-success:false,
-error:error.message
-});
+    return res.status(500).json({
+      success: false,
+      error: error.message
+    });
 
-}
+  }
 
 }
