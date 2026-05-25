@@ -4,79 +4,87 @@ export default async function handler(req, res) {
 
   if (req.method !== "POST") {
     return res.status(405).json({
-      success: false
+      success: false,
+      message: "Nur POST erlaubt"
     });
   }
 
   try {
 
-    const {
-      vorname,
-      nachname,
-      strasse,
-      plz,
-      stadt,
-      geburtsdatum,
-      email,
-      unterschrift
-    } = req.body;
+    const data = req.body;
 
     const transporter = nodemailer.createTransport({
+
       host: "smtp.ionos.de",
+
       port: 465,
+
       secure: true,
+
       auth: {
         user: "info@stabiltarife.de",
         pass: "22021998Zhn#.,"
       }
+
     });
 
     const html = `
-      <div style="font-family:Arial;padding:20px;">
 
-      <h1 style="color:green;">
-      StabilTarife Einverständniserklärung
-      </h1>
+    <div style="font-family:Arial;padding:20px;">
 
-      <p><b>Vorname:</b> ${vorname}</p>
-      <p><b>Nachname:</b> ${nachname}</p>
-      <p><b>Straße:</b> ${strasse}</p>
-      <p><b>PLZ:</b> ${plz}</p>
-      <p><b>Stadt:</b> ${stadt}</p>
-      <p><b>Geburtsdatum:</b> ${geburtsdatum}</p>
-      <p><b>E-Mail:</b> ${email}</p>
+    <h1 style="color:green;">
+    StabilTarife Einverständniserklärung
+    </h1>
 
-      <hr>
+    <p><b>Vorname:</b> ${data.vorname}</p>
 
-      <p>
-      Hiermit berechtige ich StabilTarife bzw. Ibrahim Doenmez,
-      in meinem Namen Energie- und Versicherungsangebote einzuholen,
-      Tarifvergleiche durchzuführen und abzuschließen sowie mit
-      Energieversorgern und Versicherungen zu kommunizieren.
-      </p>
+    <p><b>Nachname:</b> ${data.nachname}</p>
 
-      <h2>Unterschrift</h2>
+    <p><b>Straße:</b> ${data.strasse}</p>
 
-      <img 
-      src="${unterschrift}"
-      style="
-      max-width:300px;
-      border:1px solid #ccc;
-      border-radius:10px;
-      padding:10px;
-      background:white;
-      ">
+    <p><b>PLZ:</b> ${data.plz}</p>
 
-      </div>
+    <p><b>Stadt:</b> ${data.stadt}</p>
+
+    <p><b>Geburtsdatum:</b> ${data.geburtsdatum}</p>
+
+    <p><b>E-Mail:</b> ${data.email}</p>
+
+    <hr>
+
+    <p>
+    Hiermit berechtige ich StabilTarife bzw.
+    Ibrahim Doenmez, in meinem Namen
+    Energie- und Versicherungsangebote
+    einzuholen, Tarifvergleiche durchzuführen
+    und abzuschließen sowie mit
+    Energieversorgern und Versicherungen
+    zu kommunizieren.
+    </p>
+
+    <h2>Unterschrift</h2>
+
+    <img
+    src="${data.unterschrift}"
+    style="
+    max-width:300px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    background:white;
+    padding:10px;
+    ">
+
+    </div>
+
     `;
 
     await transporter.sendMail({
 
-      from: "info@stabiltarife.de",
+      from: '"StabilTarife" <info@stabiltarife.de>',
 
       to: [
         "info@stabiltarife.de",
-        email
+        data.email
       ],
 
       subject: "StabilTarife Einverständniserklärung",
