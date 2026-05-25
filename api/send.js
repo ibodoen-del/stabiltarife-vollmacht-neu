@@ -11,7 +11,16 @@ export default async function handler(req, res) {
 
   try {
 
-    const data = req.body;
+    const {
+      vorname,
+      nachname,
+      strasse,
+      plz,
+      stadt,
+      geburtsdatum,
+      email,
+      unterschrift
+    } = req.body;
 
     const transporter = nodemailer.createTransport({
 
@@ -23,36 +32,47 @@ export default async function handler(req, res) {
 
       auth: {
         user: "info@stabiltarife.de",
-        pass: "22021998Zhn#.,"
+        pass: "HIER_DEIN_IONOS_PASSWORT"
       }
 
     });
 
     const html = `
 
-    <div style="font-family:Arial;padding:20px;">
+    <div style="
+    font-family:Arial;
+    padding:20px;
+    max-width:700px;
+    margin:auto;
+    ">
 
-    <h1 style="color:green;">
+    <h1 style="
+    color:green;
+    ">
     StabilTarife Einverständniserklärung
     </h1>
 
-    <p><b>Vorname:</b> ${data.vorname}</p>
+    <p><b>Vorname:</b> ${vorname}</p>
 
-    <p><b>Nachname:</b> ${data.nachname}</p>
+    <p><b>Nachname:</b> ${nachname}</p>
 
-    <p><b>Straße:</b> ${data.strasse}</p>
+    <p><b>Straße:</b> ${strasse}</p>
 
-    <p><b>PLZ:</b> ${data.plz}</p>
+    <p><b>PLZ:</b> ${plz}</p>
 
-    <p><b>Stadt:</b> ${data.stadt}</p>
+    <p><b>Stadt:</b> ${stadt}</p>
 
-    <p><b>Geburtsdatum:</b> ${data.geburtsdatum}</p>
+    <p><b>Geburtsdatum:</b> ${geburtsdatum}</p>
 
-    <p><b>E-Mail:</b> ${data.email}</p>
+    <p><b>E-Mail:</b> ${email}</p>
 
     <hr>
 
-    <p>
+    <p style="
+    line-height:1.6;
+    font-size:16px;
+    ">
+
     Hiermit berechtige ich StabilTarife bzw.
     Ibrahim Doenmez, in meinem Namen
     Energie- und Versicherungsangebote
@@ -60,12 +80,15 @@ export default async function handler(req, res) {
     und abzuschließen sowie mit
     Energieversorgern und Versicherungen
     zu kommunizieren.
+
     </p>
 
     <h2>Unterschrift</h2>
 
     <img
-    src="${data.unterschrift}"
+
+    src="${unterschrift}"
+
     style="
     max-width:300px;
     border:1px solid #ccc;
@@ -84,7 +107,7 @@ export default async function handler(req, res) {
 
       to: [
         "info@stabiltarife.de",
-        data.email
+        email
       ],
 
       subject: "StabilTarife Einverständniserklärung",
