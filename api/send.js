@@ -48,13 +48,13 @@ from:'"StabilTarife" <info@stabiltarife.de>',
 
 to:`info@stabiltarife.de, ${email}`,
 
-subject:"Neue StabilTarife Vollmacht",
+subject:"StabilTarife Berechtigung",
 
 text:"Ihre Vollmacht befindet sich im PDF Anhang.",
 
 attachments:[
 {
-filename:"StabilTarife-Vollmacht.pdf",
+filename:"StabilTarife-Berechtigung.pdf",
 content:pdfData
 }
 ]
