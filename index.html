@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>StabilTarife Vollmacht</title>
+<title>StabilTarife Einverständniserklärung</title>
 
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
 
 <style>
 
 body{
-font-family:Arial;
+font-family:Arial,sans-serif;
 background:#f4f4f4;
 padding:20px;
+margin:0;
 }
 
 .container{
@@ -29,14 +33,15 @@ h1{
 text-align:center;
 color:green;
 margin-bottom:30px;
+font-size:28px;
 }
 
 input{
 width:100%;
-padding:12px;
+padding:14px;
 margin-bottom:15px;
 border:1px solid #ccc;
-border-radius:8px;
+border-radius:10px;
 font-size:16px;
 box-sizing:border-box;
 }
@@ -50,12 +55,12 @@ background:white;
 }
 
 button{
-padding:14px;
+width:100%;
+padding:15px;
 border:none;
 border-radius:10px;
 font-size:16px;
 cursor:pointer;
-width:100%;
 margin-top:10px;
 }
 
@@ -69,34 +74,47 @@ background:red;
 color:white;
 }
 
+p{
+line-height:1.7;
+font-size:16px;
+color:#333;
+}
+
+h3{
+margin-top:30px;
+}
+
 </style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-<h1>StabilTarife Vollmacht</h1>
+<h1>StabilTarife Einverständniserklärung</h1>
 
-<input id="vorname" placeholder="Vorname *">
+<input id="vorname" placeholder="Vorname *" required>
 
-<input id="nachname" placeholder="Nachname *">
+<input id="nachname" placeholder="Nachname *" required>
 
-<input id="strasse" placeholder="Straße & Hausnummer *">
+<input id="strasse" placeholder="Straße & Hausnummer *" required>
 
-<input id="plz" placeholder="PLZ *">
+<input id="plz" placeholder="PLZ *" required>
 
-<input id="stadt" placeholder="Stadt *">
+<input id="stadt" placeholder="Stadt *" required>
 
 <input id="geburtsdatum" type="date">
 
-<input id="email" type="email" placeholder="E-Mail-Adresse *">
+<input id="email" type="email" placeholder="E-Mail-Adresse *" required>
 
 <p>
+
 Hiermit berechtige ich StabilTarife bzw. Ibrahim Doenmez,
 in meinem Namen Energie- und Versicherungsangebote einzuholen,
 Tarifvergleiche durchzuführen und abzuschließen sowie mit
 Energieversorgern und Versicherungen zu kommunizieren.
+
 </p>
 
 <h3>Unterschrift</h3>
@@ -118,55 +136,80 @@ Jetzt unterschreiben & senden
 const canvas = document.getElementById("signature-pad");
 
 canvas.width = canvas.offsetWidth;
+
 canvas.height = 200;
 
 const signaturePad = new SignaturePad(canvas);
 
 function clearSignature(){
+
 signaturePad.clear();
+
 }
 
 async function sendForm(){
 
 if(signaturePad.isEmpty()){
+
 alert("Bitte unterschreiben");
+
 return;
+
 }
 
 const data = {
+
 vorname: document.getElementById("vorname").value,
+
 nachname: document.getElementById("nachname").value,
+
 strasse: document.getElementById("strasse").value,
+
 plz: document.getElementById("plz").value,
+
 stadt: document.getElementById("stadt").value,
+
 geburtsdatum: document.getElementById("geburtsdatum").value,
+
 email: document.getElementById("email").value,
+
 unterschrift: signaturePad.toDataURL()
+
 };
 
 try{
 
 const response = await fetch("/api/send",{
+
 method:"POST",
+
 headers:{
 "Content-Type":"application/json"
 },
+
 body:JSON.stringify(data)
+
 });
 
 const result = await response.json();
 
 if(result.success){
+
 alert("Erfolgreich versendet");
+
+location.reload();
+
 }else{
-alert("Fehler beim Versand");
+
+alert(result.error || "Fehler beim Versand");
+
 }
 
 }catch(error){
 
-console.error(error);
+console.log(error);
 
-alert(result.error || "Serverfehler");
+alert("Serverfehler");
 
 }
 
@@ -175,4 +218,5 @@ alert(result.error || "Serverfehler");
 </script>
 
 </body>
+
 </html>
