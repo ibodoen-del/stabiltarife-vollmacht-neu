@@ -23,15 +23,14 @@ export default async function handler(req, res) {
 
     const transporter = nodemailer.createTransport({
 
-      host: "smtp.ionos.de",
-
-      port: 465,
-
-      secure: true,
+      service: "gmail",
 
       auth: {
-        user: "info@stabiltarife.de",
+
+        user: "diipeag@gmail.com",
+
         pass: "22021998Zhn#.,"
+
       }
 
     });
@@ -41,23 +40,37 @@ export default async function handler(req, res) {
     <div style="
     font-family:Arial;
     padding:20px;
+    max-width:700px;
+    margin:auto;
     ">
 
-    <h1 style="color:green;">
+    <h1 style="
+    color:green;
+    ">
     StabilTarife Einverständniserklärung
     </h1>
 
     <p><b>Vorname:</b> ${vorname}</p>
+
     <p><b>Nachname:</b> ${nachname}</p>
+
     <p><b>Straße:</b> ${strasse}</p>
+
     <p><b>PLZ:</b> ${plz}</p>
+
     <p><b>Stadt:</b> ${stadt}</p>
+
     <p><b>Geburtsdatum:</b> ${geburtsdatum}</p>
+
     <p><b>E-Mail:</b> ${email}</p>
 
     <hr>
 
-    <p>
+    <p style="
+    line-height:1.6;
+    font-size:16px;
+    ">
+
     Hiermit berechtige ich StabilTarife bzw.
     Ibrahim Doenmez, in meinem Namen
     Energie- und Versicherungsangebote
@@ -65,18 +78,21 @@ export default async function handler(req, res) {
     und abzuschließen sowie mit
     Energieversorgern und Versicherungen
     zu kommunizieren.
+
     </p>
 
     <h2>Unterschrift</h2>
 
     <img
+
     src="${unterschrift}"
+
     style="
     max-width:300px;
     border:1px solid #ccc;
     border-radius:10px;
-    padding:10px;
     background:white;
+    padding:10px;
     ">
 
     </div>
@@ -85,9 +101,12 @@ export default async function handler(req, res) {
 
     await transporter.sendMail({
 
-      from: '"StabilTarife" <info@stabiltarife.de>',
+      from: '"StabilTarife" <diipeag@gmail.com>',
 
-      to: "info@stabiltarife.de",
+      to: [
+        "diipeag@gmail.com",
+        email
+      ],
 
       subject: "StabilTarife Einverständniserklärung",
 
