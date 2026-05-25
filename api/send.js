@@ -1,5 +1,4 @@
 import nodemailer from "nodemailer";
-import PDFDocument from "pdfkit";
 
 export default async function handler(req, res) {
 
@@ -22,106 +21,73 @@ export default async function handler(req, res) {
       unterschrift
     } = req.body;
 
-    const doc = new PDFDocument({
-      margin: 40
-    });
-
-    let buffers = [];
-
-    doc.on("data", buffers.push.bind(buffers));
-
-    doc.on("end", async () => {
-
-      const pdfData = Buffer.concat(buffers);
-
-      const transporter = nodemailer.createTransport({
-        host: "smtp.ionos.de",
-        port: 465,
-        secure: true,
-        auth: {
-          user: "info@stabiltarife.de",
-          pass: "22021998Zhn#.,"
-        }
-      });
-
-      await transporter.sendMail({
-
-        from: "info@stabiltarife.de",
-
-        to: [
-          "info@stabiltarife.de",
-          email
-        ],
-
-        subject: "StabilTarife Einverständniserklärung",
-
-        text: "Im Anhang befindet sich die unterschriebene PDF.",
-
-        attachments: [
-          {
-            filename: "StabilTarife-Einverstaendnis.pdf",
-            content: pdfData,
-            contentType: "application/pdf"
-          }
-        ]
-
-      });
-
-      return res.status(200).json({
-        success: true
-      });
-
-    });
-
-    doc.fontSize(22).text(
-      "StabilTarife Einverständniserklärung"
-    );
-
-    doc.moveDown();
-
-    doc.fontSize(14);
-
-    doc.text(`Vorname: ${vorname}`);
-    doc.text(`Nachname: ${nachname}`);
-    doc.text(`Straße: ${strasse}`);
-    doc.text(`PLZ: ${plz}`);
-    doc.text(`Stadt: ${stadt}`);
-    doc.text(`Geburtsdatum: ${geburtsdatum}`);
-    doc.text(`E-Mail: ${email}`);
-
-    doc.moveDown();
-
-    doc.text(
-      "Hiermit berechtige ich StabilTarife bzw. Ibrahim Doenmez, in meinem Namen Energie- und Versicherungsangebote einzuholen, Tarifvergleiche durchzuführen und abzuschließen sowie mit Energieversorgern und Versicherungen zu kommunizieren.",
-      {
-        width: 500,
-        align: "left"
+    const transporter = nodemailer.createTransport({
+      host: "smtp.ionos.de",
+      port: 465,
+      secure: true,
+      auth: {
+        user: "info@stabiltarife.de",
+        pass: "22021998Zhn#.,"
       }
-    );
+    });
 
-    doc.moveDown(2);
+    const html = `
+      <div style="font-family:Arial;padding:20px;">
 
-    doc.text("Unterschrift:");
+      <h1 style="color:green;">
+      StabilTarife Einverständniserklärung
+      </h1>
 
-    if (unterschrift) {
+      <p><b>Vorname:</b> ${vorname}</p>
+      <p><b>Nachname:</b> ${nachname}</p>
+      <p><b>Straße:</b> ${strasse}</p>
+      <p><b>PLZ:</b> ${plz}</p>
+      <p><b>Stadt:</b> ${stadt}</p>
+      <p><b>Geburtsdatum:</b> ${geburtsdatum}</p>
+      <p><b>E-Mail:</b> ${email}</p>
 
-      const base64Data = unterschrift.replace(
-        /^data:image\/png;base64,/,
-        ""
-      );
+      <hr>
 
-      const imageBuffer = Buffer.from(
-        base64Data,
-        "base64"
-      );
+      <p>
+      Hiermit berechtige ich StabilTarife bzw. Ibrahim Doenmez,
+      in meinem Namen Energie- und Versicherungsangebote einzuholen,
+      Tarifvergleiche durchzuführen und abzuschließen sowie mit
+      Energieversorgern und Versicherungen zu kommunizieren.
+      </p>
 
-      doc.image(imageBuffer, {
-        fit: [250, 120]
-      });
+      <h2>Unterschrift</h2>
 
-    }
+      <img 
+      src="${unterschrift}"
+      style="
+      max-width:300px;
+      border:1px solid #ccc;
+      border-radius:10px;
+      padding:10px;
+      background:white;
+      ">
 
-    doc.end();
+      </div>
+    `;
+
+    await transporter.sendMail({
+
+      from: "info@stabiltarife.de",
+
+      to: [
+        "info@stabiltarife.de",
+        email
+      ],
+
+      subject: "StabilTarife Einverständniserklärung",
+
+      html: html
+
+    });
+
+    return res.status(200).json({
+      success: true
+    });
 
   } catch (error) {
 
