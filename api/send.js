@@ -4,8 +4,7 @@ export default async function handler(req, res) {
 
   if (req.method !== "POST") {
     return res.status(405).json({
-      success: false,
-      message: "Nur POST erlaubt"
+      success: false
     });
   }
 
@@ -36,46 +35,29 @@ export default async function handler(req, res) {
       }
 
     });
-    await transporter.verify();
-
-console.log("SMTP VERBUNDEN");
 
     const html = `
 
     <div style="
     font-family:Arial;
     padding:20px;
-    max-width:700px;
-    margin:auto;
     ">
 
-    <h1 style="
-    color:green;
-    ">
+    <h1 style="color:green;">
     StabilTarife Einverständniserklärung
     </h1>
 
     <p><b>Vorname:</b> ${vorname}</p>
-
     <p><b>Nachname:</b> ${nachname}</p>
-
     <p><b>Straße:</b> ${strasse}</p>
-
     <p><b>PLZ:</b> ${plz}</p>
-
     <p><b>Stadt:</b> ${stadt}</p>
-
     <p><b>Geburtsdatum:</b> ${geburtsdatum}</p>
-
     <p><b>E-Mail:</b> ${email}</p>
 
     <hr>
 
-    <p style="
-    line-height:1.6;
-    font-size:16px;
-    ">
-
+    <p>
     Hiermit berechtige ich StabilTarife bzw.
     Ibrahim Doenmez, in meinem Namen
     Energie- und Versicherungsangebote
@@ -83,21 +65,18 @@ console.log("SMTP VERBUNDEN");
     und abzuschließen sowie mit
     Energieversorgern und Versicherungen
     zu kommunizieren.
-
     </p>
 
     <h2>Unterschrift</h2>
 
     <img
-
     src="${unterschrift}"
-
     style="
     max-width:300px;
     border:1px solid #ccc;
     border-radius:10px;
-    background:white;
     padding:10px;
+    background:white;
     ">
 
     </div>
