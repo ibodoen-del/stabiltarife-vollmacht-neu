@@ -23,16 +23,16 @@ unterschrift
 
 const transporter = nodemailer.createTransport({
 host: "smtp.ionos.de",
-port: 587,
-secure: false,
+port: 465,
+secure: true,
 auth: {
 user: "info@stabiltarife.de",
-pass: "22021998Zhn#.,"
+pass: "DEINPASSWORT"
 }
 });
 
 const html = `
-<h1>Neue StabilTarife Vollmacht</h1>
+<h1>Neue StabilTarife Einverständniserklärung</h1>
 
 <p><b>Vorname:</b> ${vorname}</p>
 
@@ -51,21 +51,21 @@ const html = `
 <hr>
 
 <p>
-Hiermit berechtige ich StabilTarife bzw. Ibrahim Doenmez,
-in meinem Namen Energie- und Versicherungsangebote einzuholen,
-Tarifvergleiche durchzuführen und abzuschließen sowie mit
-Energieversorgern und Versicherungen zu kommunizieren.
+Hiermit erkläre ich mein Einverständnis, dass StabilTarife bzw.
+Ibrahim Doenmez in meinem Namen Energie- und Versicherungsangebote
+einholen, Tarifvergleiche durchführen sowie mit Energieversorgern
+und Versicherungen kommunizieren darf.
 </p>
 
 <h2>Unterschrift</h2>
 
-<img src="${unterschrift}" style="max-width:300px;border:1px solid #ccc;">
+<img src="${unterschrift}" style="max-width:300px;border:1px solid #ccc;border-radius:10px;">
 `;
 
 await transporter.sendMail({
 from: "info@stabiltarife.de",
 to: "info@stabiltarife.de",
-subject: "Neue StabilTarife Vollmacht",
+subject: "Neue StabilTarife Einverständniserklärung",
 html: html
 });
 
