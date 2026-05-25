@@ -81,8 +81,13 @@ doc.text(`E-Mail: ${email}`);
 
 doc.moveDown();
 
-doc.text("Hiermit berechtige ich StabilTarife bzw. Ibrahim Doenmez, Energie- und Versicherungsangebote einzuholen.");
-
+doc.text(
+"Hiermit berechtige ich StabilTarife bzw. Ibrahim Doenmez, in meinem Namen Energie- und Versicherungsangebote einzuholen, Tarifvergleiche durchzuführen und abzuschließen sowie mit Energieversorgern und Versicherungen zu kommunizieren.",
+{
+width: 500,
+align: "left"
+}
+);
 doc.moveDown();
 
 doc.text("Unterschrift:");
