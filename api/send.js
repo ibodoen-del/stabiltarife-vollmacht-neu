@@ -115,7 +115,7 @@ export default async function handler(req, res) {
 
       from: '"StabilTarife" <info@stabiltarife.de>',
 
-      to: "info@stabiltarife.de",
+    to: `info@stabiltarife.de, ${email}`,
 
       subject: "StabilTarife Einverständniserklärung",
 
