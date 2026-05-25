@@ -27,7 +27,7 @@ port: 465,
 secure: true,
 auth: {
 user: "info@stabiltarife.de",
-pass: "DEINPASSWORT"
+pass: "22021998Zhn#.,"
 }
 });
 
