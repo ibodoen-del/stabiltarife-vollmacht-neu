@@ -93,20 +93,7 @@ export default async function handler(req, res) {
 
     </p>
 
-    <h2>Unterschrift</h2>
-
-    <img
-
-    src="${unterschrift}"
-
-    style="
-    max-width:320px;
-    border:1px solid #ccc;
-    border-radius:10px;
-    background:white;
-    padding:10px;
-    ">
-
+ 
     </div>
 
     `;
@@ -119,7 +106,14 @@ export default async function handler(req, res) {
 
       subject: "StabilTarife Einverständniserklärung",
 
-      html: html
+      html: html,
+
+attachments: [
+{
+filename: "unterschrift.png",
+path: unterschrift
+}
+]
 
     });
 
