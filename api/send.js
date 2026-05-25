@@ -3,9 +3,14 @@ import nodemailer from "nodemailer";
 export default async function handler(req, res) {
 
 if (req.method !== "POST") {
+
+```
 return res.status(405).json({
-success: false
+  success: false,
+  message: "Nur POST erlaubt"
 });
+```
+
 }
 
 try {
@@ -32,10 +37,14 @@ const transporter = nodemailer.createTransport({
 
   auth: {
 
-    user: "info@stabilenergie.de",
+    user: "info@stabiltarife.de",
 
     pass: "22021998Zhn#.,"
 
+  },
+
+  tls: {
+    rejectUnauthorized: false
   }
 
 });
@@ -47,6 +56,7 @@ font-family:Arial;
 padding:20px;
 max-width:700px;
 margin:auto;
+color:#222;
 ">
 
 <h1 style="
@@ -72,7 +82,7 @@ StabilTarife Einverständniserklärung
 <hr>
 
 <p style="
-line-height:1.6;
+line-height:1.7;
 font-size:16px;
 ">
 
@@ -93,7 +103,7 @@ zu kommunizieren.
 src="${unterschrift}"
 
 style="
-max-width:300px;
+max-width:320px;
 border:1px solid #ccc;
 border-radius:10px;
 background:white;
@@ -106,10 +116,10 @@ padding:10px;
 
 await transporter.sendMail({
 
-  from: '"StabilTarife" <info@stabilenergie.de>',
+  from: '"StabilTarife" <info@stabiltarife.de>',
 
   to: [
-    "info@stabilenergie.de",
+    "info@stabiltarife.de",
     email
   ],
 
@@ -127,6 +137,8 @@ return res.status(200).json({
 } catch (error) {
 
 ```
+console.log("MAIL FEHLER:");
+
 console.log(error);
 
 return res.status(500).json({
