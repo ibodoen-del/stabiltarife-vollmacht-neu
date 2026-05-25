@@ -36,6 +36,9 @@ export default async function handler(req, res) {
       }
 
     });
+    await transporter.verify();
+
+console.log("SMTP VERBUNDEN");
 
     const html = `
 
