@@ -2,151 +2,142 @@ import nodemailer from "nodemailer";
 
 export default async function handler(req, res) {
 
-if (req.method !== "POST") {
+  if (req.method !== "POST") {
 
-```
-return res.status(405).json({
-  success: false,
-  message: "Nur POST erlaubt"
-});
-```
+    return res.status(405).json({
+      success: false,
+      message: "Nur POST erlaubt"
+    });
 
-}
-
-try {
-
-```
-const {
-  vorname,
-  nachname,
-  strasse,
-  plz,
-  stadt,
-  geburtsdatum,
-  email,
-  unterschrift
-} = req.body;
-
-const transporter = nodemailer.createTransport({
-
-  host: "smtp.ionos.de",
-
-  port: 465,
-
-  secure: true,
-
-  auth: {
-
-    user: "info@stabiltarife.de",
-
-    pass: "22021998Zhn#.,"
-
-  },
-
-  tls: {
-    rejectUnauthorized: false
   }
 
-});
+  try {
 
-const html = `
+    const {
+      vorname,
+      nachname,
+      strasse,
+      plz,
+      stadt,
+      geburtsdatum,
+      email,
+      unterschrift
+    } = req.body;
 
-<div style="
-font-family:Arial;
-padding:20px;
-max-width:700px;
-margin:auto;
-color:#222;
-">
+    const transporter = nodemailer.createTransport({
 
-<h1 style="
-color:green;
-">
-StabilTarife Einverständniserklärung
-</h1>
+      host: "smtp.ionos.de",
 
-<p><b>Vorname:</b> ${vorname}</p>
+      port: 465,
 
-<p><b>Nachname:</b> ${nachname}</p>
+      secure: true,
 
-<p><b>Straße:</b> ${strasse}</p>
+      auth: {
 
-<p><b>PLZ:</b> ${plz}</p>
+        user: "info@stabiltarife.de",
 
-<p><b>Stadt:</b> ${stadt}</p>
+        pass: "22021998Zhn#.,"
 
-<p><b>Geburtsdatum:</b> ${geburtsdatum}</p>
+      },
 
-<p><b>E-Mail:</b> ${email}</p>
+      tls: {
+        rejectUnauthorized: false
+      }
 
-<hr>
+    });
 
-<p style="
-line-height:1.7;
-font-size:16px;
-">
+    const html = `
 
-Hiermit berechtige ich StabilTarife bzw.
-Ibrahim Doenmez, in meinem Namen
-Energie- und Versicherungsangebote
-einzuholen, Tarifvergleiche durchzuführen
-und abzuschließen sowie mit
-Energieversorgern und Versicherungen
-zu kommunizieren.
+    <div style="
+    font-family:Arial;
+    padding:20px;
+    max-width:700px;
+    margin:auto;
+    color:#222;
+    ">
 
-</p>
+    <h1 style="
+    color:green;
+    ">
+    StabilTarife Einverständniserklärung
+    </h1>
 
-<h2>Unterschrift</h2>
+    <p><b>Vorname:</b> ${vorname}</p>
 
-<img
+    <p><b>Nachname:</b> ${nachname}</p>
 
-src="${unterschrift}"
+    <p><b>Straße:</b> ${strasse}</p>
 
-style="
-max-width:320px;
-border:1px solid #ccc;
-border-radius:10px;
-background:white;
-padding:10px;
-">
+    <p><b>PLZ:</b> ${plz}</p>
 
-</div>
+    <p><b>Stadt:</b> ${stadt}</p>
 
-`;
+    <p><b>Geburtsdatum:</b> ${geburtsdatum}</p>
 
-await transporter.sendMail({
+    <p><b>E-Mail:</b> ${email}</p>
 
-  from: '"StabilTarife" <info@stabiltarife.de>',
+    <hr>
 
-  to: [
-    "info@stabiltarife.de",
-    email
-  ],
+    <p style="
+    line-height:1.7;
+    font-size:16px;
+    ">
 
-  subject: "StabilTarife Einverständniserklärung",
+    Hiermit berechtige ich StabilTarife bzw.
+    Ibrahim Doenmez, in meinem Namen
+    Energie- und Versicherungsangebote
+    einzuholen, Tarifvergleiche durchzuführen
+    und abzuschließen sowie mit
+    Energieversorgern und Versicherungen
+    zu kommunizieren.
 
-  html: html
+    </p>
 
-});
+    <h2>Unterschrift</h2>
 
-return res.status(200).json({
-  success: true
-});
-```
+    <img
 
-} catch (error) {
+    src="${unterschrift}"
 
-```
-console.log("MAIL FEHLER:");
+    style="
+    max-width:320px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    background:white;
+    padding:10px;
+    ">
 
-console.log(error);
+    </div>
 
-return res.status(500).json({
-  success: false,
-  error: error.message
-});
-```
+    `;
 
-}
+    await transporter.sendMail({
+
+      from: '"StabilTarife" <info@stabiltarife.de>',
+
+      to: "info@stabiltarife.de",
+
+      subject: "StabilTarife Einverständniserklärung",
+
+      html: html
+
+    });
+
+    return res.status(200).json({
+      success: true
+    });
+
+  } catch (error) {
+
+    console.log("MAIL FEHLER:");
+
+    console.log(error);
+
+    return res.status(500).json({
+      success: false,
+      error: error.message
+    });
+
+  }
 
 }
