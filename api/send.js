@@ -92,7 +92,7 @@ export default async function handler(req, res) {
     doc.moveDown();
 
     doc.text(
-      "Hiermit erkläre ich mein Einverständnis, dass StabilTarife bzw. Ibrahim Doenmez in meinem Namen Energie- und Versicherungsangebote einholen, Tarifvergleiche durchführen sowie mit Energieversorgern und Versicherungen kommunizieren darf.",
+      "Hiermit berechtige ich StabilTarife bzw. Ibrahim Doenmez, in meinem Namen Energie- und Versicherungsangebote einzuholen, Tarifvergleiche durchzuführen und abzuschließen sowie mit Energieversorgern und Versicherungen zu kommunizieren.",
       {
         width: 500,
         align: "left"
