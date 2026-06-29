@@ -84,7 +84,7 @@ export default async function handler(req, res) {
     ">
 
     Hiermit berechtige ich StabilTarife bzw.
-    Ibrahim Doenmez, in meinem Namen
+    Ibrahim und Melika Doenmez, in meinem Namen
     Energie- und Versicherungsangebote
     einzuholen, Tarifvergleiche durchzuführen
     und abzuschließen sowie mit
